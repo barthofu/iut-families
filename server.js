@@ -1,7 +1,7 @@
 const express = require('express'),
       bodyParser = require('body-parser'),
 
-      initModels = require('./app/models/_initModels')
+      modelsLoader = require('./src/loaders/models.loader')
       
 const app = express()
 
@@ -9,11 +9,7 @@ app
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extend: true }))
 
-const dbConfig = require('./app/models/_index'),
-      db = Object.assign(
-          dbConfig,
-          initModels(dbConfig.sequelize)
-      )
+const db = modelsLoader
 db.sequelize.sync()
 
 app.get('/', (req, res) => {
