@@ -15,11 +15,11 @@ const Sequelize = require('sequelize'),
 
 function initModels (sequelize) {
 
-    const tables = fs.readdirSync('./app/models').filter(fileName => !fileName.startsWith('_')).map(fileName => fileName.split('.')[0])
+    const tables = fs.readdirSync('./src/models').filter(fileName => !fileName.startsWith('_')).map(fileName => fileName.split('.')[0])
     
     //import models
     for (const table of tables) 
-        models[table] = require(`./${table}.js`)(sequelize, DataTypes)
+        models[table] = require(`../models/${table}.js`)(sequelize, DataTypes)
     
     //check for forgein key relations
     for (const table of tables) {

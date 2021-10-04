@@ -9,13 +9,12 @@ app
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extend: true }))
 
-const db = modelsLoader
+global.db = modelsLoader
 db.sequelize.sync()
 
-app.get('/', (req, res) => {
-    res.json({ message: 'Yeah !' })
-})
+const apiRoute = require('./src/routes/api')
 
+app.use('/api', apiRoute)
 
 const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
