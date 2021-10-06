@@ -40,6 +40,13 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: 0
+    },
+    lastLogin: {
+      type: Sequelize.DATE
+    },
+    status: {
+        type: Sequelize.ENUM('active', 'inactive'),
+        defaultValue: 'active'
     }
   }, {
     sequelize,

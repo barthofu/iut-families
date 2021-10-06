@@ -1,4 +1,4 @@
-const getFamily = require('../services/family/fetch')
+const getFamily = require('../services/family/get')
 
 module.exports = async (req, res) => {
 

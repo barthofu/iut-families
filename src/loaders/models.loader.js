@@ -1,17 +1,24 @@
-const { HOST, USER, PASSWORD, DB, dialect, pool } = require('../config/db.config')
-
 const Sequelize = require('sequelize'),
-      sequelize = new Sequelize(DB, USER, PASSWORD, {
-          host: HOST,
-          dialect,
-          operatorsAliases: false,
-          pool,
-      })
+      DataTypes = Sequelize.DataTypes,
+      fs = require('fs'),
+      env = process.env.NODE_ENV || 'development',
 
-      const fs = require('fs'),
-      DataTypes = require('sequelize').DataTypes,
+      { host, username, password, database, dialect } = require('../config/db.config')[env],
 
+      pool = {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+      },
       models = {}
+
+const sequelize = new Sequelize(database, username, password, {
+    host,
+    dialect,
+    operatorsAliases: false,
+    pool,
+})
 
 function initModels (sequelize) {
 
