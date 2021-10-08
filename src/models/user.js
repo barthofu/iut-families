@@ -1,66 +1,105 @@
 const Sequelize = require('sequelize')
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('user', {
+
+module.exports = (sequelize, DataTypes) => {
+
+  const Model = sequelize.define('user', {
     id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
+		autoIncrement: true,
+		type: DataTypes.INTEGER,
+		allowNull: false,
+		primaryKey: true
     },
     firstName: {
-      type: DataTypes.STRING(64),
-      allowNull: false
+		type: DataTypes.STRING(64),
+		allowNull: false
     },
     lastName: {
-      type: DataTypes.STRING(64),
-      allowNull: false
+		type: DataTypes.STRING(64),
+		allowNull: false
     },
     birthdate: {
-      type: DataTypes.DATEONLY,
-      allowNull: false
+		type: DataTypes.DATEONLY,
+		allowNull: true
     },
     description: {
-      type: DataTypes.STRING(1000),
-      allowNull: true
+		type: DataTypes.STRING(1000),
+		allowNull: true
     },
     secs: {
-      type: DataTypes.TINYINT,
-      allowNull: true,
-      defaultValue: 0
+		type: DataTypes.TINYINT,
+		allowNull: true,
+		defaultValue: 0
     },
-    email: {
-      type: DataTypes.STRING(255),
-      allowNull: false
+    secret: {
+		type: DataTypes.STRING(255),
+		allowNull: false
     },
-    password: {
-      type: DataTypes.STRING(255),
-      allowNull: false
+	admin: {
+		type: DataTypes.TINYINT,
+		allowNull: true,
+		defaultValue: 0
     },
-    isVerified: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true,
-      defaultValue: 0
+	createdAt: {
+		type: Sequelize.DATE
     },
-    lastLogin: {
-      type: Sequelize.DATE
+    updatedAt: {
+		type: Sequelize.DATE
     },
-    status: {
-        type: Sequelize.ENUM('active', 'inactive'),
-        defaultValue: 'active'
-    }
-  }, {
-    sequelize,
-    tableName: 'user',
-    timestamps: false,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
-      },
-    ]
-  })
+	}, {
+		sequelize,
+		tableName: 'user',
+		timestamps: true,
+		indexes: [
+			{
+				name: "PRIMARY",
+				unique: true,
+				using: "BTREE",
+				fields: [
+				{ name: "id" },
+				]
+			}
+		]
+	})
+
+	// =================== METHODS ====================
+
+	// Instance
+
+	Model.updateSecs = (increment) => {
+		try {
+			this.increment({
+				'secs': increment
+			})
+			return true
+		} catch (e) {
+			return false
+		}
+
+	}
+
+	// Class
+
+	Model.prototype.getUserById = async function (id, excludeSecret) {
+
+		const user = await db.user.findOne(excludeSecret ? { where: { id }, attributes: { exclude: ['secret'] } } : {
+			where: { id },
+		})
+
+		// console.log('fuck you my love <3')
+		
+		return user
+	}
+
+	Model.prototype.getAllUsers = async () => {
+
+		return this.findAll()
+	}
+
+
+
+
+
+
+
+	return Model
 }
