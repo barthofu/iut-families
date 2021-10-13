@@ -3,7 +3,7 @@ const Fuse = require('fuse.js'),
 
 module.exports = {
 
-    getUserById: async (id, excludeSecret = true) => await db.user.prototype.getUserById(id, excludeSecret),
+    getUserById: async (id, excludeSecret = true) => await db.user.getUserById(id, excludeSecret),
 
     getUserByQuery: async (query) => {
 

@@ -65,21 +65,19 @@ module.exports = (sequelize, DataTypes) => {
 
 	// Instance
 
-	Model.updateSecs = (increment) => {
+	Model.prototype.updateSecs = async function (increment) {
 		try {
-			this.increment({
-				'secs': increment
-			})
-			return true
+			this.secs += increment
+			this.save()
+			return this
 		} catch (e) {
-			return false
+			return e
 		}
-
 	}
 
 	// Class
 
-	Model.prototype.getUserById = async function (id, excludeSecret) {
+	Model.getUserById = async function (id, excludeSecret) {
 
 		const user = await db.user.findOne(excludeSecret ? { where: { id }, attributes: { exclude: ['secret'] } } : {
 			where: { id },
@@ -90,7 +88,7 @@ module.exports = (sequelize, DataTypes) => {
 		return user
 	}
 
-	Model.prototype.getAllUsers = async () => {
+	Model.getAllUsers = async () => {
 
 		return this.findAll()
 	}

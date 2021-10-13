@@ -1,7 +1,7 @@
 const  APIEndpoint = require('../utils/APIEndpoint'),
 
       { getUserById } = require('../services/getUser'),
-      { NotFoundError } = require('../utils/errors')
+      { NotFoundError, DatabaseError } = require('../utils/errors')
 
 const params = {
 
@@ -30,8 +30,9 @@ module.exports = class extends APIEndpoint {
         
         if (!user) return next(new NotFoundError('Utilisateur non trouvé'))
     
-        await user.updateSecs(increment)
+        const result = await user.updateSecs(increment)
+        if (result instanceof Error) return next(new DatabaseError(result))
     
-        res.render({ success: true })
+        res.json({ success: true, data: result })
     }
 }
