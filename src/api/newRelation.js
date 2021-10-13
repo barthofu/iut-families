@@ -1,16 +1,14 @@
 const APIEndpoint = require('../utils/APIEndpoint'),
-
-      { DatabaseError } = require('../utils/errors'),
-      uuidAPIKey = require('uuid-apikey')
+      { DatabaseError } = require('../utils/errors')
 
 const params = {
 
-    name: 'addUser',
+    name: 'newRelation',
     type: 'post',
     aliases: [],
     requiredArgs: [ 
-        { name: 'firstName', type: 'string' },
-        { name: 'lastName', type: 'string' },
+        { name: 'godfatherId', type: 'int' },
+        { name: 'godsonId', type: 'int' }
     ],
     verifyAPIKey: true,
     admin: true
@@ -23,20 +21,17 @@ module.exports = class extends APIEndpoint {
     }
 
     async run (req, res, next) {
-
-        //generate api key
-        const secret = uuidAPIKey.create()
-        req.body.secret = secret.uuid
     
         //create the user in the db
-        db.user.create(req.body)
-            .then(newUser => {
+        db.family_relation.create(req.body)
+            .then(newFamilyRelation => {
                 res.json({
                     success: true,
-                    userId: newUser.id,
-                    apiKey: secret.apiKey
+                    data: newFamilyRelation
                 })
             })
             .catch(e => next(new DatabaseError(e)))
     }
+
+
 }

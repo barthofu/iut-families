@@ -1,18 +1,17 @@
-const  APIEndpoint = require('../utils/APIEndpoint'),
+const APIEndpoint = require('../utils/APIEndpoint'),
 
       { getUserById } = require('../services/getUser'),
       { NotFoundError } = require('../utils/errors')
 
 const params = {
 
-    name: 'updateSecs',
-    type: 'post',
+    name: 'getUserById',
+    type: 'get',
     aliases: [],
-    requiredArgs: [
+    requiredArgs: [ 
         { name: 'id', type: 'int' },
-        { name: 'increment', type: 'int' }
     ],
-    verifyAPIKey: true,
+    verifyAPIKey: false,
     admin: false
 }
 
@@ -24,14 +23,11 @@ module.exports = class extends APIEndpoint {
 
     async run (req, res, next) {
 
-        const { id, increment } = req.body
-    
-        const user = await getUserById(id)
-        
+        const user = await getUserById(req.query.id)
+            
         if (!user) return next(new NotFoundError('Utilisateur non trouvé'))
-    
-        await user.updateSecs(increment)
-    
-        res.render({ success: true })
+        
+        return res.json(user)
     }
+
 }

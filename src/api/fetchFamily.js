@@ -1,19 +1,39 @@
-const fetchFamily = require('../services/fetchFamily'),
+const APIEndpoint = require('../utils/APIEndpoint'),
+
+      fetchFamily = require('../services/fetchFamily'),
       { getUserById } = require('../services/getUser'),
 
       { NotFoundError } = require('../utils/errors')
 
+const params = {
 
-module.exports = async (req, res, next) => {
+    name: 'fetchFamily',
+    type: 'get',
+    aliases: [],
+    requiredArgs: [ 
+        { name: 'id', type: 'int' },
+    ],
+    verifyAPIKey: false,
+    admin: false
+}
 
-    //get the related user
-    const user = await getUserById(req.query.id)
-    if (!user) return next(new NotFoundError('Utilisateur non trouvé')) 
 
-    //fetch the entire family
-    const family = await fetchFamily(user)
+module.exports = class extends APIEndpoint {
 
-    //render the result
-    return res.json(family)
+    constructor () {
+        super(params)
+    }
 
+    async run (req, res, next) {
+
+        //get the related user
+        const user = await getUserById(req.query.id)
+        if (!user) return next(new NotFoundError('Utilisateur non trouvé')) 
+    
+        //fetch the entire family
+        const family = await fetchFamily(user)
+    
+        //render the result
+        return res.json(family)
+    }
 }

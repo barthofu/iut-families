@@ -1,24 +1,25 @@
-const verifyAPIKey = require('./middlewares/apiKey'),
-      isAdmin = require('./middlewares/isAdmin')
+const //middlewares
+      verifyAPIKey = require('./middlewares/verifyAPIKey'),
+      isAdmin = require('./middlewares/isAdmin'),
+      nullMiddleware = (req, res, next) => next(),
 
-      getUser = require('./api/getUser'),
-      fetchFamily = require('./api/fetchFamily'),
-      getApiKey = require('./api/getApiKey'),
+      //routes loader
+      routes = require('./loaders/routes.loader')
 
-      updateSecs = require('./api/updateSecs'),
-      addUser = require('./api/addUser')
+const router = require('express').Router()
 
-let router = require('express').Router()
+for (const route of routes) {
 
-router
-    //.get('/', (req, res) => res.json({ res: 'Bienvenue sur l\api IUT Families !<br><br>Voici la liste des routes :' }))
-    
-    .get('/getUser', getUser)
-    .get('/fetchFamily', fetchFamily)
-    .get('/getApiKey', verifyAPIKey, isAdmin, getApiKey)
-    
-    .post('/addUser', verifyAPIKey, isAdmin, addUser)
-    .post('/updateSecs', verifyAPIKey, updateSecs)
-    
+    //binding the daughter class instance context to the mother class method 'verifyRequiredArgs'
+    const verifyRequiredArgs = route.verifyRequiredArgs.bind(route)
+
+    router[route.type](
+        `/${route.name}`,
+        (route.verifyAPIKey ? verifyAPIKey : nullMiddleware),
+        (route.admin ? isAdmin : nullMiddleware),
+        (route.requiredArgs.length > 0 ? verifyRequiredArgs : nullRoute),
+        route.run
+        )
+}
 
 module.exports = router

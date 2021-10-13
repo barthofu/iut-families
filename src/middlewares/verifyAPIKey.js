@@ -1,4 +1,4 @@
-const { BadRequestError } = require("../utils/errors"),
+const { BadRequestError } = require("../utils/Errors"),
       uuidAPIKey = require('uuid-apikey')
 
 module.exports = async (req, res, next) => {

@@ -11,6 +11,7 @@ module.exports = {
         }
     },
 
+
     BadRequestError: class extends Error {
 
         constructor (message, error) {
@@ -22,6 +23,7 @@ module.exports = {
         }
     },
 
+
     DatabaseError: class extends Error {
 
         constructor (error) {
@@ -30,9 +32,9 @@ module.exports = {
 
             this.data = error
             this.statusCode = 500
-
         }
     },
+
 
     ForbiddenError: class extends Error {
 
@@ -42,6 +44,26 @@ module.exports = {
 
             this.statusCode = 403
         }
+    },
+
+
+    MissingArgError: class extends Error {
+        
+        constructor (arg) {
+
+            super(`Argument manquant (${arg.name})`)
+
+            this.statusCode = 400
+        }
+    },
+
+
+    ArgTypeError: class extends Error {
+
+        constructor (arg) {
+            super(`Erreur de type: ${arg.name} devrait être un ${arg.type}`)
+        }
     }
+
 
 }
