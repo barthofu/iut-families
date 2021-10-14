@@ -12,6 +12,7 @@ const params = {
         { name: 'query', type: 'string' },
     ],
     verifyAPIKey: false,
+    fillotsOnly: false,
     admin: false
 }
 

@@ -21,8 +21,10 @@ module.exports = async (req, res, next) => {
 
         else {
 
-            req.userId = user.id
-            req.admin = user.admin === 0 ? false : true
+            req.user = {
+                id: user.id,
+                admin: user.admin === 0 ? false : true
+            }
             req.authorized = true
             next()
         }

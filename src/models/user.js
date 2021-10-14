@@ -75,6 +75,16 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	}
 
+	Model.prototype.updateDescription = async function (description) {
+		try {
+			this.description = description
+			this.save()
+			return this
+		} catch (e) {
+			return e
+		}
+	}
+
 	// Class
 
 	Model.getUserById = async function (id, excludeSecret) {

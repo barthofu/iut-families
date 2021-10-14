@@ -13,6 +13,7 @@ const params = {
         { name: 'id', type: 'int' },
     ],
     verifyAPIKey: true,
+    fillotsOnly: false,
     admin: true
 }
 

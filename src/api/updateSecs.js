@@ -9,10 +9,10 @@ const params = {
     type: 'post',
     aliases: [],
     requiredArgs: [
-        { name: 'id', type: 'int' },
         { name: 'increment', type: 'int' }
     ],
     verifyAPIKey: true,
+    fillotsOnly: true,
     admin: false
 }
 
@@ -24,13 +24,12 @@ module.exports = class extends APIEndpoint {
 
     async run (req, res, next) {
 
-        const { id, increment } = req.body
+        const id = req.user.admin ? ( req.body.id || req.user.id ) : req.user.id
     
         const user = await getUserById(id)
-        
         if (!user) return next(new NotFoundError('Utilisateur non trouvé'))
     
-        const result = await user.updateSecs(increment)
+        const result = await user.updateSecs(req.body.increment)
         if (result instanceof Error) return next(new DatabaseError(result))
     
         res.json({ success: true, data: result })

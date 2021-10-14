@@ -1,5 +1,6 @@
 module.exports = {
 
+
     NotFoundError: class extends Error {
 
         constructor (message, error) {

@@ -19,8 +19,6 @@ async function getRelations (type, userId) {
 
 module.exports = async (user) => {
 
-    console.log(user)
-
     return {
         user,
         godsons: await getRelations(0, user.id),

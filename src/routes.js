@@ -1,6 +1,7 @@
 const //middlewares
       verifyAPIKey = require('./middlewares/verifyAPIKey'),
       isAdmin = require('./middlewares/isAdmin'),
+      fillotsOnly = require('./middlewares/fillotsOnly'),
       nullMiddleware = (req, res, next) => next(),
 
       //routes loader
@@ -16,6 +17,7 @@ for (const route of routes) {
     router[route.type](
         `/${route.name}`,
         (route.verifyAPIKey ? verifyAPIKey : nullMiddleware),
+        (route.fillotsOnly ? fillotsOnly : nullMiddleware),
         (route.admin ? isAdmin : nullMiddleware),
         (route.requiredArgs.length > 0 ? verifyRequiredArgs : nullRoute),
         route.run

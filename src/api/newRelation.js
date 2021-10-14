@@ -11,6 +11,7 @@ const params = {
         { name: 'godsonId', type: 'int' }
     ],
     verifyAPIKey: true,
+    fillotsOnly: false,
     admin: true
 }
 

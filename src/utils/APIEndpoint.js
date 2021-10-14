@@ -8,6 +8,7 @@ module.exports = class {
         aliases,
         requiredArgs,
         verifyAPIKey,
+        fillotsOnly,
         admin
     }) {
 
@@ -17,6 +18,7 @@ module.exports = class {
         this.aliases = aliases
         this.requiredArgs = requiredArgs
         this.verifyAPIKey = verifyAPIKey
+        this.fillotsOnly = fillotsOnly
         this.admin = admin
     }
 
