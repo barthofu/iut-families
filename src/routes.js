@@ -11,15 +11,15 @@ const router = require('express').Router()
 
 for (const route of routes) {
 
-    //binding the daughter class instance context to the mother class method 'verifyRequiredArgs'
-    const verifyRequiredArgs = route.verifyRequiredArgs.bind(route)
+    //binding the daughter class instance context to the mother class method 'verifyArgs'
+    const verifyArgs = route.verifyArgs.bind(route)
 
     router[route.type](
         `/${route.name}`,
         (route.verifyAPIKey ? verifyAPIKey : nullMiddleware),
         (route.fillotsOnly ? fillotsOnly : nullMiddleware),
         (route.admin ? isAdmin : nullMiddleware),
-        (route.requiredArgs.length > 0 ? verifyRequiredArgs : nullRoute),
+        (route.args.length > 0 ? verifyArgs : nullRoute),
         route.run
         )
 }

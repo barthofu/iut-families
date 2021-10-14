@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    godfatherId: {
+    parrainId: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
@@ -33,10 +33,10 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
       {
-        name: "godfatherId",
+        name: "parrainId",
         using: "BTREE",
         fields: [
-          { name: "godfatherId" },
+          { name: "parrainId" },
         ]
       },
     ]

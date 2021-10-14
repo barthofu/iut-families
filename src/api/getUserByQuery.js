@@ -8,7 +8,7 @@ const params = {
     name: 'getUserByQuery',
     type: 'get',
     aliases: [],
-    requiredArgs: [ 
+    args: [ 
         { name: 'query', type: 'string' },
     ],
     verifyAPIKey: false,

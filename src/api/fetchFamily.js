@@ -10,7 +10,7 @@ const params = {
     name: 'fetchFamily',
     type: 'get',
     aliases: [],
-    requiredArgs: [ 
+    args: [ 
         { name: 'id', type: 'int' },
     ],
     verifyAPIKey: false,

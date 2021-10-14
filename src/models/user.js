@@ -39,6 +39,11 @@ module.exports = (sequelize, DataTypes) => {
 		allowNull: true,
 		defaultValue: 0
     },
+	confirmed: {
+		type: DataTypes.TINYINT,
+		allowNull: true,
+		defaultValue: 0
+    },
 	createdAt: {
 		type: Sequelize.DATE
     },
@@ -65,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
 
 	// Instance
 
-	Model.prototype.updateSecs = async function (increment) {
+	Model.prototype.addSecs = async function (increment) {
 		try {
 			this.secs += increment
 			this.save()
@@ -85,11 +90,37 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	}
 
+	Model.prototype.hasFillot = async function (fillotId) {
+		
+		const result = await db.family_relation.findOne({
+			where: {
+				parrainId: this.id,
+				fillotId,
+				confirmed: 1
+			}
+		})
+
+		return result ? true : false
+	}
+
+	Model.prototype.hasParrain = async function (parrainId) {
+		
+		const result = await db.family_relation.findOne({
+			where: {
+				parrainId,
+				fillotId: this.id,
+				confirmed: 1
+			}
+		})
+
+		return result ? true : false
+	}
+
 	// Class
 
 	Model.getUserById = async function (id, excludeSecret) {
 
-		const user = await db.user.findOne(excludeSecret ? { where: { id }, attributes: { exclude: ['secret'] } } : {
+		const user = await db.user.findOne(excludeSecret ? { where: { id, confirmed: 1 }, attributes: { exclude: ['secret'] } } : {
 			where: { id },
 		})
 
@@ -102,11 +133,6 @@ module.exports = (sequelize, DataTypes) => {
 
 		return this.findAll()
 	}
-
-
-
-
-
 
 
 	return Model

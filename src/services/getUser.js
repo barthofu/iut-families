@@ -7,7 +7,7 @@ module.exports = {
 
     getUserByQuery: async (query) => {
 
-        const allUsers = await db.user.findAll({ attributes: { exclude: [ 'secret' ] } }),
+        const allUsers = await db.user.findAll({ where: { confirmed: 1 }, attributes: { exclude: [ 'secret' ] } }),
         fuse = new Fuse(allUsers, fuseOptions)
 
         const results = fuse.search(query).map(res => res.item)

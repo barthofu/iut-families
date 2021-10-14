@@ -4,7 +4,7 @@ const { BadRequestError } = require("../utils/Errors"),
 module.exports = async (req, res, next) => {
 
     const apiKey = req.body?.apiKey || req.query?.apiKey 
-
+    
     if (!apiKey) return next(new BadRequestError('Clé API non fournie'))
 
     else if (!uuidAPIKey.isAPIKey(apiKey)) return next(new BadRequestError('Clé API invalide (mauvais format)'))
@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
         const secretUUID = uuidAPIKey.toUUID(apiKey)
 
         const user = await db.user.findOne({
-            where: { secret: secretUUID }
+            where: { secret: secretUUID, confirmed: 1 }
         })
 
         if (!user) return next(new BadRequestError('Clé API non reconnue'))

@@ -6,7 +6,7 @@ module.exports = class {
         name,
         type,
         aliases,
-        requiredArgs,
+        args,
         verifyAPIKey,
         fillotsOnly,
         admin
@@ -16,19 +16,19 @@ module.exports = class {
         this.type = type
         this.argsOrigin = type === 'post' ? 'body' : 'query'
         this.aliases = aliases
-        this.requiredArgs = requiredArgs
+        this.args = args
         this.verifyAPIKey = verifyAPIKey
         this.fillotsOnly = fillotsOnly
         this.admin = admin
     }
 
-    verifyRequiredArgs (req, res, next) {
+    verifyArgs (req, res, next) {
 
-        for (const requiredArg of this.requiredArgs) {
+        for (const arg of this.args.filter(arg => !arg.optional)) {
 
-            const arg = req[this.argsOrigin][requiredArg.name]
+            const rawArg = req[this.argsOrigin][arg.name]
 
-            if (!arg) return next(new MissingArgError(requiredArg))
+            if (!rawArg) return next(new MissingArgError(arg))
             // else if (typeof arg !== requiredArg.type) return next(new ArgTypeError(requiredArg))
         }
 

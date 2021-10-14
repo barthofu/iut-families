@@ -1,6 +1,6 @@
-const APIEndpoint = require('../utils/APIEndpoint'),
+const APIEndpoint = require('../../utils/APIEndpoint'),
 
-      { DatabaseError } = require('../utils/errors'),
+      { DatabaseError } = require('../../utils/errors'),
       uuidAPIKey = require('uuid-apikey')
 
 const params = {
@@ -8,7 +8,7 @@ const params = {
     name: 'addUser',
     type: 'post',
     aliases: [],
-    requiredArgs: [ 
+    args: [ 
         { name: 'firstName', type: 'string' },
         { name: 'lastName', type: 'string' },
     ],
@@ -28,6 +28,9 @@ module.exports = class extends APIEndpoint {
         //generate api key
         const secret = uuidAPIKey.create()
         req.body.secret = secret.uuid
+
+        //other attributes changes
+        req.confirmed = 1
     
         //create the user in the db
         db.user.create(req.body)

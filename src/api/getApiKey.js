@@ -9,7 +9,7 @@ const params = {
     name: 'getAPIKey',
     type: 'get',
     aliases: [],
-    requiredArgs: [ 
+    args: [ 
         { name: 'id', type: 'int' },
     ],
     verifyAPIKey: true,

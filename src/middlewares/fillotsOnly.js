@@ -8,14 +8,16 @@ module.exports = async (req, res, next) => {
         
         const result = await db.family_relation.findOne({
             where: {
-                godfatherId: req.user.id,
-                godsonId: targetId
+                parrainId: req.user.id,
+                fillotId: targetId
             }
         })
 
         if (!result) return next(new ForbiddenError('Cet utilisateur n\'est pas ton fillot / ta fillotte'))
         
     }
+
+    req.targetId = targetId || req.user.id
 
     next()
 

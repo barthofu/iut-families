@@ -8,7 +8,7 @@ const params = {
     name: 'getUserById',
     type: 'get',
     aliases: [],
-    requiredArgs: [ 
+    args: [ 
         { name: 'id', type: 'int' },
     ],
     verifyAPIKey: false,
